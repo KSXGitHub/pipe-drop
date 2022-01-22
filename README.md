@@ -5,6 +5,8 @@
 
 Get a reference to an object, do something with the reference, and then drop the object.
 
-## Usage Examples
+## Documentation
+
+All documentation and examples are in [docs.rs](https://docs.rs/pipe-drop).
 
 ## License
