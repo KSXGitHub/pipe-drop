@@ -10,3 +10,5 @@ Get a reference to an object, do something with the reference, and then drop the
 All documentation and examples are in [docs.rs](https://docs.rs/pipe-drop).
 
 ## License
+
+[MIT](https://github.com/KSXGitHub/pipe-drop/blob/master/LICENSE.md) © [Hoàng Văn Khải](https://github.com/KSXGitHub/).
