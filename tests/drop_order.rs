@@ -5,17 +5,15 @@ use std::mem::forget;
 
 #[test]
 fn pipe_ref_drop() {
-    let record = Default::default();
-
-    let a = FamilyMember::new(&record);
-    let b = a.clone();
-    drop(a);
-    let c = b.clone();
-    drop(b);
-    let d = c.clone();
-    drop(c);
-    let expected_record = record.lock().unwrap().clone();
-    forget(d);
+    let expected_record = vec![
+        RecordItem::Create(0),
+        RecordItem::Create(1),
+        RecordItem::Drop(0),
+        RecordItem::Create(2),
+        RecordItem::Drop(1),
+        RecordItem::Create(3),
+        RecordItem::Drop(2),
+    ];
 
     let record = Default::default();
 
