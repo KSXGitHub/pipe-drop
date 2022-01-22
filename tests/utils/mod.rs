@@ -1,44 +1,66 @@
-use std::sync::Mutex;
+use std::{
+    collections::HashMap,
+    sync::{
+        atomic::{AtomicUsize, Ordering::Relaxed},
+        Mutex,
+    },
+};
 
+/// Creation or destruction of a generation within a family line.
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub enum RecordItem {
     Create(usize),
     Drop(usize),
 }
 
+/// ID to assign to new family lines.
+static NEXT_FAMILY: AtomicUsize = AtomicUsize::new(0);
 lazy_static::lazy_static! {
-    pub static ref RECORD: Mutex<Vec<RecordItem>> = Default::default();
+    /// All records of every family lines.
+    static ref FAMILY_RECORDS: Mutex<HashMap<usize, Vec<RecordItem>>> = Default::default();
 }
 
 impl RecordItem {
-    fn record(self) {
-        RECORD.lock().unwrap().push(self);
-        dbg!(&*RECORD.lock().unwrap());
+    /// Add the item to a family record.
+    fn record(self, family: usize) {
+        FAMILY_RECORDS
+            .lock()
+            .unwrap()
+            .entry(family)
+            .or_default()
+            .push(self);
     }
 }
 
+/// A member of a family.
 #[derive(Debug)]
-pub struct Object {
-    count: usize,
+pub struct FamilyMember {
+    family: usize,
+    generation: usize,
 }
 
-impl Default for Object {
+impl Default for FamilyMember {
     fn default() -> Self {
-        RecordItem::Create(0).record();
-        Object { count: 0 }
+        let family = NEXT_FAMILY.fetch_add(1, Relaxed);
+        RecordItem::Create(0).record(0);
+        FamilyMember {
+            family,
+            generation: 0,
+        }
     }
 }
 
-impl Clone for Object {
+impl Clone for FamilyMember {
     fn clone(&self) -> Self {
-        let count = self.count + 1;
-        RecordItem::Create(count).record();
-        Object { count }
+        let family = self.family;
+        let generation = self.generation + 1;
+        RecordItem::Create(generation).record(family);
+        FamilyMember { family, generation }
     }
 }
 
-impl Drop for Object {
+impl Drop for FamilyMember {
     fn drop(&mut self) {
-        RecordItem::Drop(self.count).record();
+        RecordItem::Drop(self.generation).record(self.family);
     }
 }
