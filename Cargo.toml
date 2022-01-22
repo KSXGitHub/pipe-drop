@@ -1,0 +1,27 @@
+[package]
+name = "pipe-drop"
+description = "Get a reference to an object, do something with the reference, and then drop the object"
+version = "0.0.0"
+authors = ["khai96_ <hvksmr1996@gmail.com>"]
+edition = "2018"
+readme = "README.md"
+license = "MIT"
+documentation = "https://docs.rs/pipe-drop"
+repository = "https://github.com/KSXGitHub/pipe-drop.git"
+keywords = [
+  "drop",
+  "trait",
+  "chain",
+]
+categories = ["no-std", "rust-patterns"]
+include = [
+  "/src",
+  "/doc",
+  "/Cargo.toml",
+  "/README.md",
+  "/LICENSE.md",
+]
+
+[dev-dependencies]
+clap = { version =  "^3.0.10", features = ["derive"] }
+lazy_static = "^1.4.0"
