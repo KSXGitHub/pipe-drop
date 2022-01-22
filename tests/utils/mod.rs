@@ -1,4 +1,5 @@
-use std::sync::Mutex;
+pub use pipe_drop::PipeDrop;
+pub use std::sync::Mutex;
 
 /// Creation or destruction of a generation within a family line.
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
