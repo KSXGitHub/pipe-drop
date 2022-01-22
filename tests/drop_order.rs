@@ -3,7 +3,7 @@ pub use utils::*;
 
 #[test]
 fn pipe_ref_drop() {
-    let expected_record = vec![
+    let expected_record = [
         RecordItem::Create(0),
         RecordItem::Create(1),
         RecordItem::Drop(0),
