@@ -1,8 +1,6 @@
 pub mod utils;
 pub use utils::*;
 
-use std::mem::forget;
-
 #[test]
 fn pipe_ref_drop() {
     let expected_record = vec![
@@ -17,12 +15,11 @@ fn pipe_ref_drop() {
 
     let record = Default::default();
 
-    let d = FamilyMember::new(&record) // a = new
+    let _persistent = FamilyMember::new(&record) // a = new
         .pipe_ref_drop(FamilyMember::clone) // b = a.clone()
         .pipe_ref_drop(FamilyMember::clone) // c = b.clone()
         .pipe_ref_drop(FamilyMember::clone);
     let actual_record = record.lock().unwrap().clone();
-    forget(d);
 
     eprintln!("Expected: {:?}", &expected_record);
     eprintln!("Actual: {:?}", &actual_record);
