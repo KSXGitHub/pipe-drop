@@ -23,5 +23,5 @@ include = [
 ]
 
 [dev-dependencies]
-clap = { version =  "^3.0.10", features = ["derive"] }
+clap = { version =  "^3.0.13", features = ["derive"] }
 lazy_static = "^1.4.0"
